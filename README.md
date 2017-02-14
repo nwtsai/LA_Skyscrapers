@@ -3,10 +3,8 @@
 Visualizing the Los Angeles skyline with WebGL. <br />
 <br />
 # Data 
-<https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Los_Angeles> <br />
 
-<a href="http://www.quora.com/Adam-DAngelo">Quora profile link for Adam D'Angelo</a>
-From this website, I got the data for the following: <br />
+Using the data gathered from <a href="https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Los_Angeles">here</a>, I was able to gather information about the following: <br />
   - Building height (feet) <br />
   - Year construction began <br />
   - Year construction ended <br />
