@@ -1,6 +1,6 @@
 # LA Skyscrapers
 
-Visualizing the Los Angeles skyline with WebGL. The project can be found <a href="https://nwtsai.github.io/LA_Skyscrapers/">here</a>. <br />
+Visualizing the Los Angeles skyline over time with a 3D, dynamic bar graph using WebGL. The project can be found <a href="https://nwtsai.github.io/LA_Skyscrapers/">here</a>. <br />
 <br />
 # Data 
 
