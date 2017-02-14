@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <script type="text/javascript" src="webgl-utils.js"></script>
+  <script type="text/javascript" src="initShaders.js"></script>
+  <script type="text/javascript" src="MV.js"></script>
+  <script type="text/javascript" src="LA_Skyscrapers.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link href="LA_Skyscrapers.css" type="text/css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+
+  <!-- Materialize -->
+  <link href="materialize/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <script src="materialize/js/materialize.js"></script>
+
+  <!-- Jquery -->
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+
+  <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vPosition;
+    uniform mat4 modelViewMatrix;
+
+    void main()
+    {
+      gl_Position = modelViewMatrix * vPosition;
+    }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    uniform vec4 color;
+
+    void main() {
+    	gl_FragColor = color;
+    }
+  </script>
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <title>CS174A Midterm Hackathon</title>
+  </head>
+
+  <body>
+    <canvas id="gl-canvas" width="1200" height="600">
+      Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
+
+  <div class="controller-wrapper">
+  <table id="controls" class="">
+        <thead>
+          <tr>
+              <th data-field="key">Key</th>
+              <th data-field="control">Control</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>r</td>
+            <td>Reset</td>
+          </tr>
+          <tr>
+            <td>h</td>
+            <td>Show / Hide</td>
+          </tr>
+          <tr>
+            <td>w</td>
+            <td>Up</td>
+          </tr>
+          <tr>
+            <td>s</td>
+            <td>Down</td>
+          </tr>
+          <tr>
+            <td>a</td>
+            <td>Rotate Left</td>
+          </tr>
+          <tr>
+            <td>d</td>
+            <td>Rotate Right</td>
+          </tr>
+          <tr>
+            <td>i</td>
+            <td>Forward</td>
+          </tr>
+          <tr>
+            <td>j</td>
+            <td>Left</td>
+          </tr>
+          <tr>
+            <td>k</td>
+            <td>Right</td>
+          </tr>
+          <tr>
+            <td>m</td>
+            <td>Back</td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3 id="graph-title">Tallest Buildings of Los Angeles</h3>
+
+    <div id="description" class="row">
+      <div class="col s12 m6">
+        <div class="card white">
+          <div class="card-content black-text">
+            <span class="card-title"><strong>Description</strong></span>
+            <p>The goal of this 3D bar graph displayed is to visualize the construction of the tallest buildings of Los Angeles. The graph aims to portray each building's relative height, start and end dates, and speed of construction. <br></br></p>
+            <p>The Y axis of the graph is the height of each building, and the X axis of the graph is each individual building. <br></br></p>
+            <p>Each bar begins to grow when its corresponding building starts construction, and the bar stops growing at its completion year. <br></br></p>
+            <p>Bars are color-coded based on the legend below in order to help viewers immediately see the distribution of construction times. </p>
+          </div>
+          <div class="divider"></div>
+          <div class="card-content black-text">
+            <span class="card-title"><strong>Legend</strong></span>
+            <ul class="collection">
+              <li class="collection-item"><span class="new badge green" data-badge-caption="Green"></span>Constructed from 1926 - 1949</a>
+              <li class="collection-item"><span class="new badge red" data-badge-caption="Red"></span>Constructed from 1950 - 1974</a>
+              <li class="collection-item"><span class="new badge blue" data-badge-caption="Blue"></span>Constructed from 1975 - 1999</a>
+              <li class="collection-item"><span class="new badge purple" data-badge-caption="Purple"></span>Constructed from 2000 - Present</a>
+            </ul>
+          </div>
+          <div class="card-action white">
+            <a href="https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Los_Angeles" target="_new" class="waves-effect waves-light btn blue lighten-2"><i class="material-icons left">insert_chart</i>Data Source</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
+    <!-- Current Year Text Label -->
+    <h1 id="current-year">Current Year: 1926</h1>
+
+    <br></br>
+    <div class="divider"></div>
+    <br></br>
+
+    <!-- Table Title -->
+    <h3 id="table-title">Building Data</h3>
+
+    <!-- Table for building data -->
+    <table id="mytable" class="striped">
+        <thead>
+          <tr>
+              <th data-field="Height">Height (feet)</th>
+              <th data-field="Year">Year</th>
+              <th data-field="Time">Construction Time (years)</th>
+              <th data-field="Name">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1100</td>
+            <td>2012</td>
+            <td>5</td>
+            <td>Wilshire Grand Center</td>
+          </tr>
+          <tr>
+            <td>1018</td>
+            <td>1987</td>
+            <td>2</td>
+            <td>U.S. Bank Tower</td>
+          </tr>
+          <tr>
+            <td>858</td>
+            <td>1970</td>
+            <td>3</td>
+            <td>Aon Center</td>
+          </tr>
+          <tr>
+            <td>750</td>
+            <td>1992</td>
+            <td>2</td>
+            <td>Two California Plaza</td>
+          </tr>
+          <tr>
+            <td>748</td>
+            <td>1988</td>
+            <td>3</td>
+            <td>Gas Company Tower</td>
+          </tr>
+          <tr>
+            <td>735</td>
+            <td>1992</td>
+            <td>4</td>
+            <td>Bank of America Centerr</td>
+          </tr>
+          <tr>
+            <td>725</td>
+            <td>1988</td>
+            <td>3</td>
+            <td>777 Tower</td>
+          </tr>
+          <tr>
+            <td>723</td>
+            <td>1981</td>
+            <td>2</td>
+            <td>Wells Fargo Center</td>
+          </tr>
+          <tr>
+            <td>717</td>
+            <td>1988</td>
+            <td>2</td>
+            <td>Figueroa at Wilshire</td>
+          </tr>
+          <tr>
+            <td>699</td>
+            <td>1970</td>
+            <td>2</td>
+            <td>City National Tower</td>
+          </tr>
+          <tr>
+            <td>699</td>
+            <td>1970</td>
+            <td>2</td>
+            <td>Paul Hastings Tower</td>
+          </tr>
+          <tr>
+            <td>667</td>
+            <td>2005</td>
+            <td>2</td>
+            <td>LA Live Hotels & Condominiums</td>
+          </tr>
+          <tr>
+            <td>625</td>
+            <td>1978</td>
+            <td>3</td>
+            <td>Citigroup Center</td>
+          </tr>
+          <tr>
+            <td>620</td>
+            <td>1967</td>
+            <td>2</td>
+            <td>611 Place</td>
+          </tr>
+          <tr>
+            <td>578</td>
+            <td>1983</td>
+            <td>2</td>
+            <td>One California Plaza</td>
+          </tr>
+          <tr>
+            <td>571</td>
+            <td>1972</td>
+            <td>3</td>
+            <td>Century Plaza Tower I</td>
+          </tr>
+          <tr>
+            <td>571</td>
+            <td>1972</td>
+            <td>3</td>
+            <td>Century Plaza Tower II</td>
+          </tr>
+          <tr>
+            <td>560</td>
+            <td>1981</td>
+            <td>2</td>
+            <td>KPMG Tower</td>
+          </tr>
+          <tr>
+            <td>534</td>
+            <td>1985</td>
+            <td>1</td>
+            <td>Ernst & Young Plaza</td>
+          </tr>
+          <tr>
+            <td>533</td>
+            <td>1989</td>
+            <td>1</td>
+            <td>SunAmerica Center</td>
+          </tr>
+          <tr>
+            <td>517</td>
+            <td>1990</td>
+            <td>3</td>
+            <td>TCW Tower</td>
+          </tr>
+          <tr>
+            <td>516</td>
+            <td>1965</td>
+            <td>3</td>
+            <td>Union Bank Plaza</td>
+          </tr>
+          <tr>
+            <td>506</td>
+            <td>1984</td>
+            <td>2</td>
+            <td>10 Universal City Plaza</td>
+          </tr>
+          <tr>
+            <td>496</td>
+            <td>1985</td>
+            <td>2</td>
+            <td>1100 Wilshire</td>
+          </tr>
+          <tr>
+            <td>493</td>
+            <td>2001</td>
+            <td>2</td>
+            <td>Fox Plaza</td>
+          </tr>
+          <tr>
+            <td>491</td>
+            <td>2007</td>
+            <td>2</td>
+            <td>Constellation Place</td>
+          </tr>
+          <tr>
+            <td>478</td>
+            <td>1988</td>
+            <td>2</td>
+            <td>The Century</td>
+          </tr>
+          <tr>
+            <td>463</td>
+            <td>1926</td>
+            <td>2</td>
+            <td>ARCO Tower</td>
+          </tr>
+          <tr>
+            <td>454</td>
+            <td>1946</td>
+            <td>4</td>
+            <td>Los Angeles City Hall</td>
+          </tr>
+          <tr>
+            <td>454</td>
+            <td>1965</td>
+            <td>3</td>
+            <td>Equitable Life Building</td>
+          </tr>
+          <tr>
+            <td>454</td>
+            <td>1958</td>
+            <td>3</td>
+            <td>AT&T Center</td>
+          </tr>
+          <tr>
+            <td>450</td>
+            <td>1968</td>
+            <td>3</td>
+            <td>AT&T Switching Center</td>
+          </tr>
+          <tr>
+            <td>443</td>
+            <td>1967</td>
+            <td>4</td>
+            <td>5900 Wilshire</td>
+          </tr>
+          <tr>
+            <td>417</td>
+            <td>1973</td>
+            <td>2</td>
+            <td>Warner Center Plaza II</td>
+          </tr>
+          <tr>
+            <td>414</td>
+            <td>1954</td>
+            <td>3</td>
+            <td>MCI Center</td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+#current-year
+{
+	font-family: "Montserrat";
+	font-size: 35px;
+	position: absolute;
+	top: 510px;
+	margin-left: 25px;
+	color: white;
+}
+
+#description
+{
+	margin-top: 25px;
+	margin-left: 25px;
+}
+
+#graph-title
+{
+	font-family: "Montserrat";
+	position: absolute;
+	top: 0px;
+	left: 25px;
+	color: white;
+	font-size: 45px;
+}
+
+#table-title
+{
+	font-family: "Montserrat";
+	font-size: 45px;
+	margin-left: 25px;
+}
+
+#mytable
+{
+	margin-left: 25px;
+	margin-top: 25px;
+}
+
+.controller-wrapper
+{
+	position: absolute;
+	top: 5px;
+	left: 1050px;
+}
+
+#controls
+{
+	color: white;
+}
+
+.card-title
+{
+	font-family: "Montserrat";
+}
+
+.collection-item
+{
+	color: black;
+}
