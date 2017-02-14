@@ -17,3 +17,5 @@ The faster the building was built, the faster the corresponding bar grows on the
 A full navigation system was implemented, allowing the user to fly around in 3D space. <br />
 Each bar is color-coded depending on when the building was constructed. (Legend shown on page) <br />
 
+# Screenshots
+![alt tag](http://i.imgur.com/ea7wsJh.png)
